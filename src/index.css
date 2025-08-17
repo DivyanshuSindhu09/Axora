@@ -1,0 +1,48 @@
+@import "tailwindcss";
+@font-face {
+    font-family: absans;
+    src: url(/absans-regular.otf);
+}
+
+@font-face {
+    font-family: gilroy;
+    src: url(/Gilroy-ExtraBold.otf);
+}
+
+@font-face {
+    font-family: acma-black;
+    src: url(/PPAcma-Black.otf);
+}
+
+body{
+    overflow-x: hidden;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-gradient {
+  animation: gradientMove 4s ease infinite;
+}
+
+/* Shine effect */
+.shine {
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: none;
+  transition: transform 0.7s ease-in-out;
+}
+button:hover .shine {
+  transform: translateX(100%);
+}
+
+.no-scrollbar::-webkit-scrollbar{
+  display: none;
+}

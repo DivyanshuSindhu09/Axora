@@ -101,7 +101,7 @@ const CreatePost = () => {
                         onClick={()=>setImages(images.filter((_, i)=>(i !== index)))}
                         className='absolute hidden group-hover:flex justify-center items-center top-0 right-0 bottom-0 left-0 bg-black/40 rounded-md cursor-pointer'
                         >
-                          <i className="font-bold text-xl text-white ri-close-fill"></i>
+                          <i className="font-bold text-xl z-9999999 text-white ri-close-fill"></i>
                         </div>
                       </div>
                     ))

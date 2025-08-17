@@ -81,7 +81,7 @@ background_color : "" } flex items-center justify-center flex-col fixed text-whi
       </div>
       <span 
       onClick={()=>setViewStory(null)}
-      className='absolute top-5 z-999 cursor-pointer right-5'> <i className="text-3xl font-semibold ri-close-circle-line"></i> </span>
+      className='absolute top-5 z-9999999 cursor-pointer right-5'> <i className="text-3xl font-semibold ri-close-circle-line"></i> </span>
 
       {/* user info */}
       <div className='absolute top-4 left-4 flex items-center space-x-3 p-2 px-4 sm:p-4 sm:px-8 

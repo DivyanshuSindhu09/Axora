@@ -94,7 +94,7 @@ const StoryModel = ({setModel, fetchStories}) => {
   }
 
   return (
-    <section className='w-full h-screen flex items-center justify-center flex-col fixed bg-black/80 text-white top-0 left-0 z-50 backdrop-blur'>
+    <section className='w-full h-screen flex items-center  justify-center flex-col fixed bg-black/80 text-white top-0 left-0 z-999999999 backdrop-blur'>
       <i onClick={()=>setModel(false)} className="absolute top-3 sm:top-5 right-3 sm:right-5 text-3xl cursor-pointer z-9999999 ri-close-circle-line"></i>
       <h2 className='text-3xl sm:text-4xl font-[acma-black] mb-4'>Share Your Moment!</h2>
 

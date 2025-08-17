@@ -13,7 +13,6 @@ const PostCard = ({ post }) => {
   const {getToken} = useAuth()
 
   //! const currentUser = dummyUserData
-
   const currentUser = useSelector((state)=>state.user.value)
 
   const handleLike = async () => {
@@ -23,22 +22,14 @@ const PostCard = ({ post }) => {
     try {
       const {data} = await api.post('/api/post/like', 
         //! req.body ->
-        {
-          postId : post._id 
-        },
-        {
-          headers : {
-            Authorization : `Bearer ${token}`
-          }
-        }
+        { postId : post._id },
+        { headers : { Authorization : `Bearer ${token}` } }
       )
 
       if(data.success){
-        
-
         setLikes(
           (prev) => {
-            if(prev.includes (currentUser._id)){
+            if(prev.includes(currentUser._id)){
               return prev.filter((id) => id !== currentUser._id)
             }else{
               toast.success("You have liked this post")
@@ -62,6 +53,7 @@ const PostCard = ({ post }) => {
 
   return (
     <div className="bg-gradient-to-br w-full from-[#1c1f26] to-[#13151a] text-gray-100 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_6px_25px_rgba(0,0,0,0.6)] transition-all duration-300 border border-gray-800/60 p-4 space-y-4">
+      
       {/* user info */}
       <div className="flex items-center gap-3">
         <img
@@ -71,8 +63,9 @@ const PostCard = ({ post }) => {
         />
         <div>
           <span
-          onClick={()=>navigate(`/profile/${post.user._id}`)}
-          className="flex cursor-pointer items-center gap-2 text-[15px] font-bold font-[absans]">
+            onClick={()=>navigate(`/profile/${post.user._id}`)}
+            className="flex cursor-pointer items-center gap-2 text-[15px] font-bold font-[absans]"
+          >
             {post.user?.full_name}
           </span>
           <span className="flex items-center gap-2 text-sm font-[absans] text-gray-400">
@@ -85,19 +78,19 @@ const PostCard = ({ post }) => {
       {/* content */}
       {post.content && (
         <div
-          className="text-gray-300 font-[absans] text-[15px] whitespace-pre-line leading-relaxed"
+          className="text-gray-300 font-[absans] text-[15px] sm:text-[15px] whitespace-pre-line leading-relaxed"
           dangerouslySetInnerHTML={{ __html: postWithHashtags }}
         />
       )}
 
       {/* image grid */}
       {post.image_urls?.length > 0 && (
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {post.image_urls.map((img, index) => (
             <img
               key={index}
-              className={`w-full h-48 object-cover rounded-lg border border-gray-700/50 hover:scale-[1.02] transition-transform duration-300 ${
-                post.image_urls.length === 1 && 'col-span-2 h-auto'
+              className={`w-full sm:h-48 h-40 object-cover rounded-lg border border-gray-700/50 hover:scale-[1.02] transition-transform duration-300 ${
+                post.image_urls.length === 1 && 'col-span-1 sm:col-span-2 sm:h-auto'
               }`}
               src={img}
               alt=""
@@ -107,7 +100,7 @@ const PostCard = ({ post }) => {
       )}
 
       {/* action buttons */}
-      <div className="flex items-center gap-6 font-[absans] font-semibold text-gray-400 text-sm pt-3 border-t border-gray-700/60">
+      <div className="flex items-center gap-6 font-[absans] font-semibold text-gray-400 text-sm pt-3 border-t border-gray-700/60 flex-wrap">
         {/* Like */}
         <div className="flex items-center gap-1 group">
           <i

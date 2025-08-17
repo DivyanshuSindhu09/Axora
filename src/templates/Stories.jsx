@@ -39,7 +39,7 @@ const Stories = () => {
     }, [])
 
     return (
-        <section className="max-w-full px-4 ">
+        <section className="max-w-screen px-4 ">
             <div className="flex gap-3 overflow-x-auto no-scrollbar py-5 px-3">
                 
                 {/* Add Story Card */}

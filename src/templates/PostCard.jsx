@@ -117,7 +117,7 @@ const PostCard = ({ post }) => {
           <i
             className="text-lg cursor-pointer ri-question-answer-line group-hover:text-indigo-400 transition-colors duration-300 group-hover:scale-110"
           ></i>
-          <span>69</span>
+          <span></span>
         </div>
 
         {/* Share */}
@@ -125,7 +125,7 @@ const PostCard = ({ post }) => {
           <i
             className="text-lg ri-share-box-fill cursor-pointer group-hover:text-green-400 transition-colors duration-300 group-hover:scale-110"
           ></i>
-          <span>12</span>
+          <span></span>
         </div>
       </div>
     </div>

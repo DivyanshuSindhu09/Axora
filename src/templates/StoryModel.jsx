@@ -4,6 +4,7 @@ import { useAuth} from "@clerk/clerk-react"
 import api from '../api/axios'
 
 const StoryModel = ({setModel, fetchStories}) => {
+  // Story background gradients
   const storyGradients = [
     "bg-gradient-to-tr from-purple-500 to-pink-500",
     "bg-gradient-to-tr from-cyan-500 to-blue-500",
@@ -15,15 +16,16 @@ const StoryModel = ({setModel, fetchStories}) => {
 
   const {getToken} = useAuth()
 
-  const [mode, setMode] = useState("text")
-  const [background, setBackground] = useState(storyGradients[0])
-  const [text, setText] = useState("")
-  const [media, setMedia] = useState(null)
-  const [previewUrl, setPreviewUrl] = useState(null)
+  const [mode, setMode] = useState("text") // Mode: 'text' or 'media'
+  const [background, setBackground] = useState(storyGradients[0]) // Selected background gradient
+  const [text, setText] = useState("") // Story text
+  const [media, setMedia] = useState(null) // Selected media file
+  const [previewUrl, setPreviewUrl] = useState(null) // Media preview URL
 
-  const MAX_VIDEO_DURATION = 60
-  const MAX_VIDEO_SIZE_MB = 50
+  const MAX_VIDEO_DURATION = 60 // in seconds
+  const MAX_VIDEO_SIZE_MB = 50 // max size for videos
 
+  // Handle media upload
   const handleMediaUpload = (e) => {
     const file = e.target.files?.[0]
     if(file){
@@ -59,8 +61,10 @@ const StoryModel = ({setModel, fetchStories}) => {
     }
   }
 
+  // Change story background
   const changeColor = (index) => setBackground(storyGradients[index])
 
+  // Handle story creation
   const handleCreateStory = async () => {
     const token = await getToken()
     const media_type = mode === "media" ? (media?.type.startsWith('image') ? "image" : "video") : "text"
@@ -94,44 +98,55 @@ const StoryModel = ({setModel, fetchStories}) => {
   }
 
   return (
-    <section className='w-full h-screen flex items-center  justify-center flex-col fixed bg-black/80 text-white top-0 left-0 z-999999999 backdrop-blur'>
-      <i onClick={()=>setModel(false)} className="absolute top-3 sm:top-5 right-3 sm:right-5 text-3xl cursor-pointer z-9999999 ri-close-circle-line"></i>
-      <h2 className='text-3xl sm:text-4xl font-[acma-black] mb-4'>Share Your Moment!</h2>
+    // Modal wrapper
+    <section className='fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/80 backdrop-blur p-4 sm:p-8 overflow-auto'>
+      {/* Close button */}
+      <i onClick={()=>setModel(false)} className="absolute top-3 right-3 sm:top-5 sm:right-5 text-3xl cursor-pointer ri-close-circle-line text-white"></i>
+      
+      {/* Modal title */}
+      <h2 className='text-2xl sm:text-4xl font-[acma-black] mb-4 text-center'>Share Your Moment!</h2>
 
-      <div className={`rounded-lg z-100 flex items-center justify-center relative ${background} w-[90vw] sm:w-150 h-[60vh] sm:h-96`}>
+      {/* Story preview box */}
+      <div className={`rounded-lg relative ${background} w-full max-w-md h-72 sm:h-96 flex items-center justify-center overflow-hidden`}>
         {mode === "text" && (
           <textarea
             placeholder='Say it loud without saying a word...'
             value={text}
             onChange={(e)=>setText(e.target.value)}
-            className='font-[absans] bg-transparent text-white w-full h-full p-4 sm:p-6 text-lg sm:text-xl resize-none focus:outline-none'
+            className='bg-transparent text-white w-full h-full p-3 sm:p-6 text-base sm:text-lg resize-none focus:outline-none'
           />
         )}
         {mode === "media" && previewUrl && (
           media?.type.startsWith('image') ?
-          <img src={previewUrl} className='object-contain max-h-full w-full' /> :
-          <video className='object-contain max-h-full w-full' src={previewUrl} />
+          <img src={previewUrl} className='object-contain w-full h-full' /> :
+          <video className='object-contain w-full h-full' src={previewUrl} controls />
         )}
       </div>
 
+      {/* Background selector */}
       <div className='flex mt-4 gap-2 flex-wrap justify-center'>
         {storyGradients.map((color,index)=>(
           <button key={index} onClick={()=>changeColor(index)} className={`w-6 h-6 rounded-full ring cursor-pointer ${color}`} />
         ))}
       </div>
 
-      <div className='flex gap-2 mt-4 flex-col sm:flex-row w-[90vw] sm:w-150'>
-        <button onClick={()=>{setMode('text'); setMedia(null); setPreviewUrl(null)}} className={`flex-1 flex items-center justify-center gap-2 p-2 rounded ${mode==="text"?"bg-white text-black":"bg-zinc-800"}`}>
-          <i className="ri-quote-text text-xl"></i> Text
+      {/* Mode selector */}
+      <div className='flex gap-2 mt-4 flex-col sm:flex-row w-full max-w-md'>
+        <button onClick={()=>{setMode('text'); setMedia(null); setPreviewUrl(null)}} className={`flex-1 flex items-center justify-center gap-2 p-2 rounded ${mode==="text"?"bg-white text-black":"bg-zinc-800 text-white"}`}>
+          <i className="ri-quote-text text-lg"></i> Text
         </button>
-        <label className={`flex flex-1 items-center justify-center gap-2 p-2 rounded cursor-pointer ${mode==="media"?"bg-white text-black":"bg-zinc-800"}`}>
+        <label className={`flex flex-1 items-center justify-center gap-2 p-2 rounded cursor-pointer ${mode==="media"?"bg-white text-black":"bg-zinc-800 text-white"}`}>
           <input type="file" accept='image/*,video/*' className='hidden' onChange={(e)=>{handleMediaUpload(e); setMode('media')}} />
-          <i className="ri-file-upload-fill text-xl"></i> Photo/Video
+          <i className="ri-file-upload-fill text-lg"></i> Photo/Video
         </label>
       </div>
 
-      <button onClick={()=>toast.promise(handleCreateStory(), {loading:"Saving..."})} className="relative flex items-center justify-center text-xl cursor-pointer font-[acma-black] px-6 sm:px-8 py-2 sm:py-3 mt-4 rounded-2xl font-semibold text-white tracking-wide bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95">
-        <i className="ri-sparkling-2-line text-lg"></i> Create Story
+      {/* Create Story button */}
+      <button 
+        onClick={()=>toast.promise(handleCreateStory(), {loading:"Saving..."})} 
+        className="flex items-center justify-center text-lg sm:text-xl mt-4 px-5 sm:px-8 py-2 sm:py-3 rounded-2xl font-[acma-black] text-white bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95"
+      >
+        <i className="ri-sparkling-2-line text-lg sm:text-xl mr-2"></i> Create Story
       </button>
     </section>
   )

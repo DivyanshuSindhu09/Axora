@@ -19,17 +19,15 @@ const useAutoScroll = (dep) => {
 
 const ChatBox = () => {
   const { messages } = useSelector((state) => state.messages)
-
   const { userId } = useParams()
   const { getToken } = useAuth()
   const { user: loggedInUser } = useUser()   // 👈 Clerk user
   const dispatch = useDispatch()
+  const connections = useSelector((state) => state.connections.connections)
 
   const [text, setText] = useState("")
   const [image, setImage] = useState(null)
   const [user, setUser] = useState(null)
-
-  const connections = useSelector((state) => state.connections.connections)
 
   const messageEndRef = useAutoScroll(messages)
 
@@ -92,9 +90,7 @@ const ChatBox = () => {
     <section className='flex font-[absans] flex-col h-screen bg-gray-900 text-gray-100'>
       {/* Header */}
       <div className='flex items-center gap-2 p-2 md:px-10 xl:pl-42 bg-gray-800 border-b border-gray-700'>
-        <img   
-          className='size-8 rounded-full'
-          src={user.profile_picture} alt="" />
+        <img className='size-8 rounded-full' src={user.profile_picture} alt="" />
         <div>
           <p className='font-bold text-white'>{user.full_name}</p>
           <p className='text-sm text-gray-400 -mt-1.5'>@{user.username}</p>
@@ -110,7 +106,8 @@ const ChatBox = () => {
               .map((message, index) => (
                 <div
                   className={`flex flex-col ${message.from_user_id === loggedInUser.id ? 'items-end' : 'items-start'}`}
-                  key={index}>
+                  key={index}
+                >
                   <div className={`${message.from_user_id === loggedInUser.id ? "rounded-br-none bg-indigo-700 text-white" : "rounded-bl-none bg-gray-800 text-gray-100"} p-2 text-sm max-w-sm rounded-lg shadow`}>
                     
                     {/* ✅ auto scroll on image load */}
@@ -143,7 +140,8 @@ const ChatBox = () => {
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             className='flex-1 outline-none text-gray-100 bg-transparent placeholder-gray-500'
             placeholder='Type a message....'
-            type="text" />
+            type="text"
+          />
 
           <label htmlFor="image">
             {image ? (
@@ -160,7 +158,8 @@ const ChatBox = () => {
               accept='image/*'
               hidden
               onChange={(e) => setImage(e.target.files[0])}
-              type="file" />
+              type="file"
+            />
           </label>
 
           <button

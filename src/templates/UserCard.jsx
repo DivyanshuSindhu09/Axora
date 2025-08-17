@@ -10,12 +10,10 @@ import { fetchUser } from '../features/user/userSlice'
 const UserCard = ({ user }) => {
 
   const currentUser = useSelector((state)=>state.user.value)
-
   const {getToken} = useAuth()
   const dispatch = useDispatch()
   const navigate = useNavigate()  
   //!const currentUser = dummyUserData
-
 
   const handleFollow = async () => {
     const token = await getToken()
@@ -36,32 +34,47 @@ const UserCard = ({ user }) => {
       
     }
   }
+
   const handleConnectionRequest = async () => {
-  const token = await getToken()
+    const token = await getToken()
 
-  //? agar already connected hai to direct messages page pe bhej do
-  if (currentUser.connections.includes(user._id)) {
-    return navigate('/messages/' + user._id)
-  }
+    //? agar already connected hai to direct messages page pe bhej do
+    if (currentUser.connections.includes(user._id)) {
+      return navigate('/messages/' + user._id)
+    }
 
-  try {
-    const { data } = await api.post(
-      '/api/user/connect',
-      { id: user._id },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
+    try {
+      const { data } = await api.post(
+        '/api/user/connect',
+        { id: user._id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+
+      if (data.success) {
+        toast.success(data.message) // ✅ "Connection request sent successfully"
+        dispatch(fetchUser(token))
+      } else {
+        if (data.message === "Connection request already pending") {
+          // ℹ️ Info toast (blue style)
+          toast(data.message, {
+            icon: 'ℹ️',
+            style: {
+              background: '#2563eb',
+              color: '#fff'
+            }
+          })
+        } else {
+          toast.error(data.message || "Something went wrong")
         }
       }
-    )
-
-    if (data.success) {
-      toast.success(data.message) // ✅ "Connection request sent successfully"
-      dispatch(fetchUser(token))
-    } else {
-      if (data.message === "Connection request already pending") {
-        // ℹ️ Info toast (blue style)
-        toast(data.message, {
+    } catch (error) {
+      const errMsg = error.response?.data?.message || error.message
+      if (errMsg === "Connection request already pending") {
+        toast("Connection request already sent", {
           icon: 'ℹ️',
           style: {
             background: '#2563eb',
@@ -69,30 +82,16 @@ const UserCard = ({ user }) => {
           }
         })
       } else {
-        toast.error(data.message || "Something went wrong")
+        toast.error(errMsg)
       }
     }
-  } catch (error) {
-    const errMsg = error.response?.data?.message || error.message
-    if (errMsg === "Connection request already pending") {
-      toast("Connection request already sent", {
-        icon: 'ℹ️',
-        style: {
-          background: '#2563eb',
-          color: '#fff'
-        }
-      })
-    } else {
-      toast.error(errMsg)
-    }
   }
-}
 
   return (
     <div
       key={user._id}
-      className="p-5 pt-6 flex flex-col justify-between w-80
-                 border border-purple-400/30 rounded-2xl
+      className="p-4 sm:p-5 flex flex-col justify-between w-full max-w-[18rem] 
+                 sm:w-80 border border-purple-400/30 rounded-2xl
                  bg-gradient-to-b from-slate-800/80 via-gray-800/80 to-slate-800/80
                  font-[absans] transition-all duration-300 backdrop-blur-xl
                  shadow-2xl hover:shadow-2xl hover:shadow-purple-500/20
@@ -108,7 +107,7 @@ const UserCard = ({ user }) => {
           <img
             src={user.profile_picture}
             alt=""
-            className="rounded-full w-16 h-16 mx-auto border-2 border-cyan-400/60
+            className="rounded-full w-14 h-14 sm:w-16 sm:h-16 mx-auto border-2 border-cyan-400/60
                        transition-all duration-300 group-hover:border-purple-400 shadow-lg"
           />
           <div className="absolute inset-0 rounded-full border border-cyan-500/40 
@@ -116,35 +115,35 @@ const UserCard = ({ user }) => {
                           blur-md"></div>
         </div>
 
-        <p className="mt-4 font-semibold text-white">{user.full_name}</p>
+        <p className="mt-3 sm:mt-4 font-semibold text-white text-sm sm:text-base">{user.full_name}</p>
         {user.username && (
-          <p className="text-cyan-300 font-light">@{user.username}</p>
+          <p className="text-cyan-300 font-light text-xs sm:text-sm">@{user.username}</p>
         )}
         {user.bio && (
-          <p className="text-gray-300 mt-2 text-center text-sm px-4 leading-snug">
+          <p className="text-gray-300 mt-1 sm:mt-2 text-center text-xs sm:text-sm px-2 sm:px-4 leading-snug">
             {user.bio}
           </p>
         )}
       </div>
 
       {/* Location & Followers */}
-      <div className="flex items-center justify-center gap-2 mt-4 text-sm text-gray-300">
-        <div className="flex items-center gap-1 border border-purple-400/30 rounded-full px-3 py-1 bg-slate-900/60 backdrop-blur-sm">
+      <div className="flex flex-wrap justify-center sm:justify-center items-center gap-2 mt-3 sm:mt-4 text-xs sm:text-sm text-gray-300">
+        <div className="flex items-center gap-1 border border-purple-400/30 rounded-full px-2 py-1 sm:px-3 sm:py-1.5 bg-slate-900/60 backdrop-blur-sm">
           <i className="ri-map-pin-2-line text-cyan-400"></i>
           <p>{user.location}</p>
         </div>
-        <div className="flex items-center gap-1 border border-purple-400/30 rounded-full px-3 py-1 bg-slate-900/60 backdrop-blur-sm">
-          <p>{user.followers.length} Follower</p>
+        <div className="flex items-center gap-1 border border-purple-400/30 rounded-full px-2 py-1 sm:px-3 sm:py-1.5 bg-slate-900/60 backdrop-blur-sm">
+          <p>{user.followers.length} Follower{user.followers.length !== 1 && 's'}</p>
         </div>
       </div>
 
       {/* Buttons */}
-      <div className="flex mt-4 gap-2 relative z-10">
+      <div className="flex mt-3 sm:mt-4 gap-2 relative z-10 flex-wrap sm:flex-nowrap">
         {/* Follow Button */}
         <button
           onClick={handleFollow}
           disabled={currentUser?.following.includes(user._id)}
-          className="w-full py-2 rounded-xl flex justify-center items-center gap-2 
+          className="flex-1 py-2 rounded-xl flex justify-center items-center gap-2 
                      bg-gradient-to-r from-cyan-500 to-purple-500
                      hover:from-cyan-600 hover:to-purple-600
                      active:scale-95 transition text-white font-medium
@@ -157,7 +156,7 @@ const UserCard = ({ user }) => {
         {/* Connection / Message */}
         <button
           onClick={handleConnectionRequest}
-          className="flex items-center justify-center w-16
+          className="flex items-center justify-center w-12 sm:w-16
                      border border-purple-400/30 text-cyan-300 rounded-xl
                      cursor-pointer active:scale-95 transition 
                      bg-slate-900/60 hover:bg-slate-800/60 backdrop-blur-sm

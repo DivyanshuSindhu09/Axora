@@ -46,3 +46,15 @@ button:hover .shine {
 .no-scrollbar::-webkit-scrollbar{
   display: none;
 }
+
+@media (max-width:600px) {
+  .res{
+    display: none;
+  }
+  .mt{
+    margin-top: 7vw;
+  }
+  .sm{
+    font-size: 15vw;
+  }
+}

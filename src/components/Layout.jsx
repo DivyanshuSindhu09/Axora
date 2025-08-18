@@ -24,7 +24,7 @@ const Layout = () => {
       {
         sideBarOpen ?
         (<i className="ri-close-circle-line absolute  z-99999 top-3 right-3 p-2 bg-white rounded-md shadow w-10 h-10 text-gray-600 sm:hidden" onClick={()=>setSideBarOpen(false)}></i>) 
-        : (<i className="ri-menu-2-line z-999 absolute top-3 right-3 p-2 bg-white rounded-md shadow w-10 h-10 text-gray-600 md:block sm:hidden" onClick={()=>setSideBarOpen(true)}></i>)
+        : (<i className="ri-menu-2-line z-999 absolute top-3 right-3 p-2 bg-white rounded-md shadow w-10 h-10 text-gray-600 sm:hidden" onClick={()=>setSideBarOpen(true)}></i>)
       }
     
     </section>

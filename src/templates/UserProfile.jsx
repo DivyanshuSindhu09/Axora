@@ -4,7 +4,7 @@ import moment from "moment"
 
 const UserProfile = ({user, posts, setShowEdit, profileId}) => {
     const { user : realUser} = useUser()
-    console.log(realUser.id)
+    // console.log(realUser.id)
 
     return (
         <div className='relative py-4 px-4 sm:px-6 md:px-8 font-[absans] bg-[#1A1D24] backdrop-blur-sm border border-gray-800/50 rounded-xl'>

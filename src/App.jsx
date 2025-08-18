@@ -52,22 +52,22 @@ const App = () => {
       eventSource.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data)
-          console.log("📡 raw SSE:", data)
+          // console.log("📡 raw SSE:", data)
 
           if (data.type === "connected") {
-            console.log("✅ SSE connected:", data.message)
+            // console.log("✅ SSE connected:", data.message)
             return
           }
 
           if (data.type === "message") {
             const msg = data.payload
-            console.log("📩 SSE new message:", msg)
+            // console.log("📩 SSE new message:", msg)
 
             if (pathnameRef.current === "/messages/" + msg.from_user_id._id) {
-              console.log("🎯 condition true hui")
+              // console.log("🎯 condition true hui")
               dispatch(addMessages(msg))
             } else {
-              console.log("⚠️ msg for other chat")
+              // console.log("⚠️ msg for other chat")
               toast.custom((t)=>(
                 <Notifications t={t} message={data.payload}/>
               ), {position : "bottom-right"})

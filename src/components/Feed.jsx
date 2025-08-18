@@ -51,7 +51,7 @@ const Feed = () => {
     <section className="max-h-screen text-white overflow-hidden overflow-y-scroll no-scrollbar flex flex-col lg:flex-row items-start justify-center lg:gap-8 bg-[#0f172a]">
       
       {/* Stories + Post list */}
-      <div className="min-h-full w-full lg:w-[70%] space-y-4">
+      <div className="min-h-screen w-screen lg:w-[70%] space-y-4">
         <div className="px-4 pt-4">
           <Stories />
         </div>

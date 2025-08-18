@@ -48,9 +48,9 @@ const Login = () => {
         <span>
           Don't have an account?
         </span>
-      <SignInButton>
+      <SignUpButton>
         <button className="px-3 lg:ml-4 ml-0 cursor-pointer py-1 bg-slate-800 rounded-xl">Sign Up</button>
-      </SignInButton>
+      </SignUpButton>
       </div>
 
       </div>

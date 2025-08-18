@@ -24,7 +24,7 @@ const UserProfile = ({user, posts, setShowEdit, profileId}) => {
                         <div>
                             <div className='flex items-center gap-3'>
                                 <h2 className='text-xl sm:text-3xl font-bold bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent'>
-                                    {user.full_name.toLowerCase().split(' ').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                                    {user.full_name}
                                 </h2>
                                 <i className="text-xl sm:text-2xl ri-verified-badge-fill text-blue-400"></i>
                             </div>

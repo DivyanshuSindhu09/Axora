@@ -8,7 +8,7 @@ const Messages = () => {
   const {connections} = useSelector((state) => state.connections)
 
   return (
-    <section className="text-white min-h-screen relative">
+    <section className="text-white overflow-y-scroll no-scrollbar max-h-screen relative">
       <div className="max-w-6xl mx-auto p-6">
         
         {/* title */}
